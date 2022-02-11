@@ -6,7 +6,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { useState } from "react";
-import { Button, TableFooter, TablePagination } from "@mui/material";
+import { Box, Button, TableFooter, TablePagination } from "@mui/material";
 import { Operation, statusToString, useCurrentOperations } from "operation";
 import { useModal } from "hooks";
 import CreateOpModal from "components/CreateOpModal";
@@ -37,8 +37,7 @@ const OpManagementTable = () => {
   };
 
   return (
-    <TableContainer
-      component={Paper}
+    <Box
       sx={{
         width: "fit-content",
         padding: 2,
@@ -54,73 +53,77 @@ const OpManagementTable = () => {
         </Button>
       </header>
       <CreateOpModal onCreate={onCreate} modal={createModal} />
-      <Table
-        sx={{
-          overflowX: "auto",
-        }}
-      >
-        <TableHead>
-          <TableRow>
-            <TableCell>Operation</TableCell>
-            <TableCell align="left">Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.length === 0 && !loading ? (
+      <TableContainer component={Paper}>
+        <Table
+          sx={{
+            overflowX: "auto",
+          }}
+        >
+          <TableHead>
             <TableRow>
-              <TableCell component="td" scope="row" colSpan={2}>
-                <div style={{ height: 400 }} className="df fc w-100">
-                  No operations
-                </div>
-              </TableCell>
+              <TableCell>Operation</TableCell>
+              <TableCell align="left">Status</TableCell>
             </TableRow>
-          ) : (
-            rows.map((row) => (
-              <TableRow
-                key={row.id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row.name}
+          </TableHead>
+          <TableBody>
+            {rows.length === 0 && !loading ? (
+              <TableRow>
+                <TableCell component="td" scope="row" colSpan={2}>
+                  <div style={{ height: 400 }} className="df fc w-100">
+                    No operations
+                  </div>
                 </TableCell>
-                <TableCell align="left">{statusToString(row.status)}</TableCell>
               </TableRow>
-            ))
-          )}
-          {emptyRows > 0 && (
-            <TableRow style={{ height: 53 * emptyRows }}>
-              <TableCell colSpan={6} />
+            ) : (
+              rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="left">
+                    {statusToString(row.status)}
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+            {emptyRows > 0 && (
+              <TableRow style={{ height: 53 * emptyRows }}>
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                count={data.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPageOptions={[rowsPerPage]}
+                labelRowsPerPage={<span>Rows:</span>}
+                labelDisplayedRows={({ page }) => {
+                  return `Page: ${page + 1}`;
+                }}
+                backIconButtonProps={{
+                  color: "secondary",
+                }}
+                nextIconButtonProps={{ color: "secondary" }}
+                SelectProps={{
+                  inputProps: {
+                    "aria-label": "page number",
+                  },
+                }}
+                showFirstButton={true}
+                showLastButton={true}
+              />
             </TableRow>
-          )}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TablePagination
-              count={data.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              rowsPerPageOptions={[rowsPerPage]}
-              labelRowsPerPage={<span>Rows:</span>}
-              labelDisplayedRows={({ page }) => {
-                return `Page: ${page + 1}`;
-              }}
-              backIconButtonProps={{
-                color: "secondary",
-              }}
-              nextIconButtonProps={{ color: "secondary" }}
-              SelectProps={{
-                inputProps: {
-                  "aria-label": "page number",
-                },
-              }}
-              showFirstButton={true}
-              showLastButton={true}
-            />
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </TableContainer>
+          </TableFooter>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 
