@@ -1,0 +1,36 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+.App {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.table-wrapper {
+  width: fit-content;
+  min-height: 400px;
+}
+
+.df {
+  display: flex;
+}
+
+.fc {
+  align-items: center;
+  justify-content: center;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.fdrr {
+  flex-direction: row-reverse;
+}
